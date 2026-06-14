@@ -1198,19 +1198,21 @@ function pickVerdict(snaps){
 
   // each candidate: does it match its condition, and by how much (ratio over threshold —
   // higher means the result overshoots its bar by more). When several match, the one
-  // exceeded by the largest ratio wins; ties fall back to this priority order.
+  // exceeded by the largest ratio wins; ties fall back to this priority order. Scores
+  // are clamped so no single uncapped metric (e.g. avgSeason) can dominate.
+  const cap = x => Math.min(3.0, x);
   const candidates = [
-    {id:'pyro',      match: nBurnt>=3,                                    score: nBurnt/3},
-    {id:'menace',    match: nDizzy>=2 || totalBoops>=12,                  score: Math.max(nDizzy/2, totalBoops/12)},
-    {id:'chaos',     match: cookSpread>=1.0 && seasonSpread>=24,          score: Math.min(cookSpread/1.0, seasonSpread/24)},
-    {id:'perfect',   match: nGolden>=5 && cookSpread<=0.4,                score: Math.min(nGolden/5, cookSpread>0 ? 0.4/cookSpread : 2)},
-    {id:'purist',    match: totalSeason===0,                              score: 1},
-    {id:'maximal',   match: avgSeason>=20,                                score: avgSeason/20},
-    {id:'salty',     match: totalSalt>=totalPepper*3 && totalSalt>=24,    score: Math.min(totalSalt/Math.max(totalPepper*3,1), totalSalt/24)},
-    {id:'peppery',   match: totalPepper>=totalSalt*3 && totalPepper>=24,  score: Math.min(totalPepper/Math.max(totalSalt*3,1), totalPepper/24)},
-    {id:'runny',     match: nRunny>=3,                                    score: nRunny/3},
-    {id:'softie',    match: avgHappy>=0.72 && nBurnt===0,                 score: avgHappy/0.72},
-    {id:'toughlove', match: nSad>=2 && nGolden>=2,                        score: Math.min(nSad/2, nGolden/2)},
+    {id:'pyro',      match: nBurnt>=3,                                    score: cap(nBurnt/3)},
+    {id:'menace',    match: nDizzy>=2 || totalBoops>=12,                  score: cap(Math.max(nDizzy/2, totalBoops/12))},
+    {id:'chaos',     match: cookSpread>=1.0 && seasonSpread>=24,          score: cap(Math.min(cookSpread/1.0, seasonSpread/24))},
+    {id:'perfect',   match: nGolden>=4 && cookSpread<=0.5,                score: cap(Math.min(nGolden/4, cookSpread>0 ? 0.5/cookSpread : 2))},
+    {id:'purist',    match: totalSeason<=4,                               score: 1.5},
+    {id:'maximal',   match: avgSeason>=36,                                score: cap(avgSeason/36)},
+    {id:'salty',     match: totalSalt>=totalPepper*3 && totalSalt>=24,    score: cap(Math.min(totalSalt/Math.max(totalPepper*3,1), totalSalt/24))},
+    {id:'peppery',   match: totalPepper>=totalSalt*3 && totalPepper>=24,  score: cap(Math.min(totalPepper/Math.max(totalSalt*3,1), totalPepper/24))},
+    {id:'runny',     match: nRunny>=3,                                    score: cap(nRunny/3)},
+    {id:'softie',    match: avgHappy>=0.65 && nBurnt===0,                 score: cap(avgHappy/0.65)},
+    {id:'toughlove', match: nSad>=2 && nGolden>=2,                        score: cap(Math.min(nSad/2, nGolden/2))},
   ];
 
   let best = null;
