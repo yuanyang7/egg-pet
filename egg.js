@@ -1196,18 +1196,29 @@ function pickVerdict(snaps){
   const nDizzy      = snaps.filter(s=>s.dizzy).length;
   const totalBoops  = sum(snaps.map(s=>s.boops||0));
 
-  if(nBurnt >= 3)                                       return 'pyro';
-  if(nDizzy >= 2 || totalBoops >= 12)                   return 'menace';
-  if(cookSpread >= 1.0 && seasonSpread >= 24)           return 'chaos';
-  if(nGolden >= 5 && cookSpread <= 0.4)                 return 'perfect';
-  if(totalSeason === 0)                                 return 'purist';
-  if(avgSeason >= 20)                                   return 'maximal';
-  if(totalSalt >= totalPepper*3 && totalSalt >= 24)     return 'salty';
-  if(totalPepper >= totalSalt*3 && totalPepper >= 24)   return 'peppery';
-  if(nRunny >= 3)                                       return 'runny';
-  if(avgHappy >= 0.72 && nBurnt === 0)                  return 'softie';
-  if(nSad >= 2 && nGolden >= 2)                         return 'toughlove';
-  return 'steady';
+  // each candidate: does it match its condition, and by how much (ratio over threshold —
+  // higher means the result overshoots its bar by more). When several match, the one
+  // exceeded by the largest ratio wins; ties fall back to this priority order.
+  const candidates = [
+    {id:'pyro',      match: nBurnt>=3,                                    score: nBurnt/3},
+    {id:'menace',    match: nDizzy>=2 || totalBoops>=12,                  score: Math.max(nDizzy/2, totalBoops/12)},
+    {id:'chaos',     match: cookSpread>=1.0 && seasonSpread>=24,          score: Math.min(cookSpread/1.0, seasonSpread/24)},
+    {id:'perfect',   match: nGolden>=5 && cookSpread<=0.4,                score: Math.min(nGolden/5, cookSpread>0 ? 0.4/cookSpread : 2)},
+    {id:'purist',    match: totalSeason===0,                              score: 1},
+    {id:'maximal',   match: avgSeason>=20,                                score: avgSeason/20},
+    {id:'salty',     match: totalSalt>=totalPepper*3 && totalSalt>=24,    score: Math.min(totalSalt/Math.max(totalPepper*3,1), totalSalt/24)},
+    {id:'peppery',   match: totalPepper>=totalSalt*3 && totalPepper>=24,  score: Math.min(totalPepper/Math.max(totalSalt*3,1), totalPepper/24)},
+    {id:'runny',     match: nRunny>=3,                                    score: nRunny/3},
+    {id:'softie',    match: avgHappy>=0.72 && nBurnt===0,                 score: avgHappy/0.72},
+    {id:'toughlove', match: nSad>=2 && nGolden>=2,                        score: Math.min(nSad/2, nGolden/2)},
+  ];
+
+  let best = null;
+  for(const c of candidates){
+    if(!c.match) continue;
+    if(!best || c.score > best.score) best = c;
+  }
+  return best ? best.id : 'steady';
 }
 
 function composePhoto(){
