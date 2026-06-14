@@ -1204,10 +1204,10 @@ function pickVerdict(snaps){
   const candidates = [
     {id:'pyro',      match: nBurnt>=3,                                    score: cap(nBurnt/3)},
     {id:'menace',    match: nDizzy>=2 || totalBoops>=12,                  score: cap(Math.max(nDizzy/2, totalBoops/12))},
-    {id:'chaos',     match: cookSpread>=1.0 && seasonSpread>=24,          score: cap(Math.min(cookSpread/1.0, seasonSpread/24))},
+    {id:'chaos',     match: cookSpread>=1.4 && seasonSpread>=44,          score: cap(Math.min(cookSpread/1.4, seasonSpread/44))},
     {id:'perfect',   match: nGolden>=4 && cookSpread<=0.5,                score: cap(Math.min(nGolden/4, cookSpread>0 ? 0.5/cookSpread : 2))},
     {id:'purist',    match: totalSeason<=4,                               score: 1.5},
-    {id:'maximal',   match: avgSeason>=36,                                score: cap(avgSeason/36)},
+    {id:'maximal',   match: avgSeason>=44,                                score: cap(avgSeason/44)},
     {id:'salty',     match: totalSalt>=totalPepper*3 && totalSalt>=24,    score: cap(Math.min(totalSalt/Math.max(totalPepper*3,1), totalSalt/24))},
     {id:'peppery',   match: totalPepper>=totalSalt*3 && totalPepper>=24,  score: cap(Math.min(totalPepper/Math.max(totalSalt*3,1), totalPepper/24))},
     {id:'runny',     match: nRunny>=3,                                    score: cap(nRunny/3)},
