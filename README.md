@@ -4,6 +4,11 @@ A tiny browser pet/toy game, rendered entirely on a single `<canvas>`. Drag raw 
 
 No build step, no dependencies, no package manager, no tests — just open an HTML file in your browser.
 
+## Play online
+
+- [English](https://yuanyang7.github.io/egg-pet/index.html)
+- [中文](https://yuanyang7.github.io/egg-pet/zh.html)
+
 ## Play it
 
 Open [`index.html`](index.html) (English) or [`zh.html`](zh.html) (Chinese) directly in a browser, or serve the folder for a cleaner reload experience:
