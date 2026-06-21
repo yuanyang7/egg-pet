@@ -104,5 +104,8 @@
   }
   /* nudge to screenshot, since there's no share button */
   .shareHint{margin:14px 0 0; font-size:13px; opacity:.6;}
+  /* author + play link, one small line under the share hint */
+  .credit{margin:5px 0 0; font-size:11px; opacity:.5; letter-spacing:.2px;}
+  .credit .url{font-weight:bold; opacity:.85;}
   .photoActions{display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
   .photoActions .tool{font-size:15px; padding:10px 18px;}

@@ -1295,21 +1295,18 @@ function composePhoto(){
 
 // portrait card: six big eggs huddled close and a little irregular — cosy, not a tidy grid
 function composePhotoPortrait(){
-  const pw=680, ph=920;
+  const pw=680, ph=860;
   const oc=document.createElement('canvas');
   oc.width=pw; oc.height=ph;
   const pc=oc.getContext('2d');
-  const fontFam = LANG==='zh'
-    ? '"Hannotate SC","Hanzipen SC","Yuanti SC","Kaiti SC","KaiTi","PingFang SC","Microsoft YaHei",sans-serif'
-    : '"Chalkboard SE","Comic Sans MS",system-ui,sans-serif';
 
   // warm board + hand-drawn cream card
   pc.fillStyle='#f1e2c8'; pc.fillRect(0,0,pw,ph);
   pc.fillStyle='#fffaf0'; pc.strokeStyle='#c8a882'; pc.lineWidth=5;
   roundRect(pc,26,26,pw-52,ph-52,32); pc.fill(); pc.stroke();
 
-  // a soft tray the eggs rest on — sized to leave a clean footer band below it
-  const trayX=58, trayY=58, trayW=pw-116, trayH=656;
+  // a soft tray the eggs rest on, filling the card (the credit/URL live in the overlay, not the image)
+  const trayX=58, trayY=58, trayW=pw-116, trayH=ph-116;
   pc.fillStyle='#f6ecda'; pc.strokeStyle='#dcc6a2'; pc.lineWidth=5;
   roundRect(pc,trayX,trayY,trayW,trayH,44); pc.fill(); pc.stroke();
   pc.strokeStyle='#e7d4b4'; pc.lineWidth=3;
@@ -1339,21 +1336,6 @@ function composePhotoPortrait(){
     .sort((a,b)=>a.cy-b.cy)   // draw top-to-bottom so lower eggs overlap on top
     .forEach(s=> drawEggPortrait(pc, s.cx, s.cy, R*s.s, s.look, s.i, s.rot));
 
-  // ---- footer band (below the tray): signature + a little play-link sticker ----
-  pc.textAlign='center';
-  pc.textBaseline='alphabetic';
-  pc.fillStyle='#a98a5e'; pc.font=`bold 21px ${fontFam}`;
-  pc.fillText('by '+S.credit, pw/2, 766);
-
-  pc.font=`bold 22px ${fontFam}`;
-  const tw=pc.measureText(S.playUrl).width;
-  const padX=24, pillH=44, pillW=tw+padX*2, pillX=(pw-pillW)/2, pillY=794;
-  pc.fillStyle='#fff7e8'; pc.strokeStyle='#d8b06a'; pc.lineWidth=3;
-  roundRect(pc, pillX, pillY, pillW, pillH, 15); pc.fill(); pc.stroke();
-  pc.fillStyle='#9a5f24'; pc.textBaseline='middle';
-  pc.fillText(S.playUrl, pw/2, pillY+pillH/2+1);
-
-  pc.textAlign='left'; pc.textBaseline='alphabetic';
   return oc.toDataURL('image/png');
 }
 
@@ -1372,7 +1354,7 @@ function composePhotoLandscape(){
   roundRect(pc,30,30,pw-60,ph-60,26); pc.fill(); pc.stroke();
 
   // a big round plate the eggs are tumbled onto, centred in the card
-  const plateX=pw/2, plateY=ph*0.45, plateR=Math.min(pw,ph)*0.40;
+  const plateX=pw/2, plateY=ph*0.5, plateR=Math.min(pw,ph)*0.43;
   pc.fillStyle='#f6ecda'; pc.strokeStyle='#dcc6a2'; pc.lineWidth=5;
   pc.beginPath(); pc.ellipse(plateX, plateY, plateR*1.05, plateR*0.92, 0, 0, Math.PI*2); pc.fill(); pc.stroke();
   pc.strokeStyle='#e7d4b4'; pc.lineWidth=3;
@@ -1399,22 +1381,7 @@ function composePhotoLandscape(){
       drawEggPortrait(pc, cx, cy, R*(sp.s+js), look, i, sp.rot+jr);
     });
 
-  // footer: signature + a little play-link sticker (no arrow)
-  pc.textAlign='center'; pc.textBaseline='middle';
-  pc.font=`bold 19px ${fontFam}`;
-  const sig='by '+S.credit, gap=26;
-  const sigW=pc.measureText(sig).width, urlW=pc.measureText(S.playUrl).width;
-  const padX=18, pillW=urlW+padX*2;
-  const total=sigW+gap+pillW, startX=(pw-total)/2, fy=ph-50;
-  pc.fillStyle='#a98a5e'; pc.textAlign='left';
-  pc.fillText(sig, startX, fy);
-  const pillX=startX+sigW+gap, pillY=fy-17, pillH=34;
-  pc.fillStyle='#fff7e8'; pc.strokeStyle='#d8b06a'; pc.lineWidth=2.5;
-  roundRect(pc, pillX, pillY, pillW, pillH, 12); pc.fill(); pc.stroke();
-  pc.fillStyle='#9a5f24'; pc.textAlign='center';
-  pc.fillText(S.playUrl, pillX+pillW/2, fy);
-
-  pc.textAlign='left'; pc.textBaseline='alphabetic';
+  pc.textAlign='left';
   return oc.toDataURL('image/png');
 }
 
@@ -1446,6 +1413,8 @@ function applyStrings(){
   const set=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
   set('titleText', S.title);
   set('byline', 'by '+S.credit);
+  const cl=document.getElementById('creditLine');
+  if(cl) cl.innerHTML = 'by '+S.credit+' · <span class="url">'+S.playUrl+'</span>';
   set('photoTitle', S.photoTitle);
   set('photoSub', S.photoSub);
   document.querySelectorAll('.tool[data-tool]').forEach(b=>{
