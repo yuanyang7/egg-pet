@@ -233,7 +233,7 @@ function queueIndexAt(x,y){
   const n=queueCount();
   for(let i=0;i<n;i++){
     const s=slotPos(i);
-    if(dist(x,y,s.x,s.y)<s.r*1.3) return i;
+    if(dist(x,y,s.x,s.y)<s.r*1.8) return i;
   }
   return -1;
 }
@@ -321,15 +321,14 @@ cv.addEventListener('pointermove',e=>{
 window.addEventListener('pointerup',()=>{
   pointer.down=false;
   if(dragEgg){
-    if(!egg && !panOccupiedByFlock() && dist(dragEgg.x,dragEgg.y,pan.x,pan.y)<pan.r*1.25){
-      egg=dragEgg; placeInPan();
-      hint(S.inPan(friedSnapshots.length+1, EGG_TOTAL));
-    } else if(panOccupiedByFlock()){
+    if(panOccupiedByFlock()){
       hint(S.squatterFirst);
     } else if(egg){
       hint(S.panBusy);
     } else {
-      hint(S.dropMiddle);
+      // pan is free — a tap or any drop near it slips the egg straight in
+      egg=dragEgg; placeInPan();
+      hint(S.inPan(friedSnapshots.length+1, EGG_TOTAL));
     }
     dragEgg=null; dragFromIdx=-1;
   }
@@ -364,7 +363,7 @@ function handleClick(x,y){
     const t = egg || panSquatter();           // heat the frying egg, or a squatter that snuck back in
     if(!t){ hint(S.dragFirst); return; }
     if(dist(x,y,pan.x,pan.y)<pan.r*1.2 && (t!==egg || egg.state!=='free')){
-      t.heat=Math.min(1, t.heat+0.3);
+      t.heat=Math.min(1, t.heat+0.4);
       if(t.state==='raw') t.state='cooking';
       sizzlePuffs(8);
       if(t===egg){
@@ -444,7 +443,7 @@ function tryPet(){
     petTarget=target;
     const moved = dist(pointer.x,pointer.y,pointer.px,pointer.py);
     if(moved>1.5){
-      target.happy=Math.min(1, target.happy + moved*0.0016);
+      target.happy=Math.min(1, target.happy + moved*0.004);
       target.petClock=0; target.lonely=false;      // affection resets the loneliness clock
       target.dizzy=Math.max(0, target.dizzy-moved*0.05);  // a soothing stroke clears the dizziness
       target.faceDir = (pointer.x-target.x)*0.02;
@@ -470,8 +469,8 @@ function sprinkle(e,kind){
 }
 function sizzlePuffs(n){
   for(let i=0;i<n;i++){
-    parts.push({x:pan.x+(Math.random()-.5)*pan.r, y:pan.y, vx:(Math.random()-.5)*0.6,
-      vy:-1-Math.random()*1.2, life:1, type:'steam', r:6+Math.random()*8});
+    parts.push({x:pan.x+(Math.random()-.5)*pan.r, y:pan.y-pan.r*0.5, vx:(Math.random()-.5)*0.6,
+      vy:-1.6-Math.random()*1.2, life:1, type:'steam', r:5+Math.random()*6});
   }
 }
 function hearts(x,y){ parts.push({x,y,vx:(Math.random()-.5)*0.6,vy:-1.2,life:1,type:'heart'}); }
@@ -492,6 +491,9 @@ function moodText(){
     return panOccupiedByFlock() ? S.moodHogging : S.moodEmpty;
   }
   if(egg.dizzy>0) return S.moodDizzy;
+  // a petted egg shows its joy even while still in the pan
+  if((egg.state==='raw'||egg.state==='cooking') && egg.happy>0.85) return S.moodBliss(seasonNote(egg));
+  if((egg.state==='raw'||egg.state==='cooking') && egg.happy>0.6) return S.moodHappy(seasonNote(egg));
   if(egg.state==='raw') return S.moodRaw;
   if(egg.state==='cooking') return egg.cook<0.5?S.moodToasty:S.moodAlmost;
   if(egg.state==='returning') return S.moodReturning;
@@ -558,8 +560,8 @@ function update(dt){
 function updateActiveEgg(dt){
   const e=egg;
   if(e.state==='cooking'){
-    e.cook=Math.min(1, e.cook + e.heat*0.0034*dt);   // a brisker fry
-    if(e.heat>0.05 && Math.random()<e.heat*0.25) sizzlePuffs(1);
+    e.cook=Math.min(1, e.cook + e.heat*0.0055*dt);   // a brisker fry
+    if(e.heat>0.05 && Math.random()<e.heat*0.12) sizzlePuffs(1);
     e.heat=Math.max(0, e.heat-0.0009*dt);
     if(e.cook>=1){ e.state='cooked'; e.cookedT=0; hint(S.ready); }
     // too blissful to sit still — sometimes a happy egg just hops out early
@@ -628,8 +630,8 @@ function updateRoamingEgg(e, dt){
     e.x += (pan.x-e.x)*0.1; e.y += (pan.y-e.y)*0.1;
     if(e.heat>0.02){
       // keep the heat on a squatter and it overcooks, going darker and darker
-      e.cook=Math.min(2.2, e.cook + e.heat*0.0034*dt);
-      if(Math.random()<e.heat*0.25) sizzlePuffs(1);
+      e.cook=Math.min(2.2, e.cook + e.heat*0.0055*dt);
+      if(Math.random()<e.heat*0.12) sizzlePuffs(1);
       e.heat=Math.max(0, e.heat-0.0009*dt);
       syncSnapshot(e);
     }
@@ -650,7 +652,7 @@ function updateFree(e, dt){
   e.goalT-=dt;
   if(e.goalT<=0){
     e.goalT=130+Math.random()*180;
-    e.goal = Math.random()<0.30 ? 'toPan' : 'wander';
+    e.goal = Math.random()<0.55 ? 'toPan' : 'wander';
     if(e.goal==='wander'){
       if(Math.random()<0.4){ e.tvx=0; e.tvy=0; }            // sometimes just chill
       else {
@@ -666,7 +668,7 @@ function updateFree(e, dt){
     if(panFree){
       const a=Math.atan2(pan.y-e.y, pan.x-e.x);
       e.tvx=Math.cos(a)*0.85; e.tvy=Math.sin(a)*0.85;
-      if(dist(e.x,e.y,pan.x,pan.y) < pan.r*0.55){
+      if(dist(e.x,e.y,pan.x,pan.y) < pan.r*0.8){
         e.state='returning'; e.retT=0;
         e.scale=eggFreeR()/(pan.r*0.8);   // start small, grow as they climb in
         return;
@@ -911,16 +913,6 @@ function drawEgg(e){
   tracePoints(ctx, blobPoints(baseR, t));
   ctx.fill(); ctx.stroke();
 
-  // crispy edge dots when browned
-  if(browning>0.5){
-    ctx.fillStyle = browning>1 ? `rgba(60,40,25,0.8)` : `rgba(190,140,80,${(browning-0.5)*1.2})`;
-    const dots = browning>1 ? 14 : 8;
-    for(let i=0;i<dots;i++){
-      const a=i/dots*Math.PI*2+0.3;
-      ctx.beginPath(); ctx.arc(Math.cos(a)*baseR*0.98,Math.sin(a)*baseR*0.88,R*0.03,0,Math.PI*2); ctx.fill();
-    }
-  }
-
   // ---- yolk — flat circle with outline ----
   const yolkR=R*0.48;
   ctx.save();
@@ -1013,7 +1005,7 @@ function drawEgg(e){
     ctx.quadraticCurveTo(x0+mw*0.25, my-yolkR*0.09, x0+mw*0.5, my);
     ctx.quadraticCurveTo(x0+mw*0.75, my+yolkR*0.09, x0+mw, my);
     ctx.stroke();
-  } else if(e.state==='raw'){
+  } else if(e.state==='raw' && happy<=0.6){
     ctx.moveTo(ed*0.3-yolkR*0.12,my); ctx.lineTo(ed*0.3+yolkR*0.12,my); ctx.stroke();
   } else if(lonely || happy<0.35){
     ctx.arc(ed*0.3,my+yolkR*0.18,yolkR*0.16,1.2*Math.PI,1.8*Math.PI); ctx.stroke();
@@ -1045,8 +1037,10 @@ function drawParticles(){
   for(const p of parts){
     ctx.globalAlpha=Math.max(0,p.life);
     if(p.type==='steam'){
-      ctx.fillStyle='#fff'; ctx.strokeStyle='#d8d0c4'; ctx.lineWidth=1.5;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      // faint soft wisp — no hard outline, so it reads as steam, not a blotch
+      ctx.globalAlpha=Math.max(0,p.life)*0.3;
+      ctx.fillStyle='#fff';
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
     } else if(p.type==='heart'){
       ctx.fillStyle='#e06050'; ctx.strokeStyle='#3a2a1a'; ctx.lineWidth=1.5;
       const hx=p.x, hy=p.y, hs=6;
