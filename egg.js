@@ -63,6 +63,8 @@ const STRINGS = {
     photoTitle:'the fried six',
     photoSub:'six eggs, six little personalities — exactly how you made them',
     photoBtn:'fry another batch',
+    shareHint:'📸 Screenshot it and get your friends frying eggs!',
+    credit:'MCTYuan',
     composeTitle:'the fried six',
     composeSub:'one batch, six little personalities',
     verdicts:{
@@ -145,6 +147,8 @@ const STRINGS = {
     photoTitle:'六颗煎蛋',
     photoSub:'六颗蛋，六种小性格，完全照你煎的样子',
     photoBtn:'再煎一盘',
+    shareHint:'📸 截图分享，叫朋友们来煎蛋！',
+    credit:'米臭汤圆',
     composeTitle:'六颗煎蛋',
     composeSub:'一盘出炉，六种小性格',
     verdicts:{
@@ -168,13 +172,52 @@ const STRINGS = {
 };
 const S = STRINGS[LANG];
 
+// one-line versions of each verdict, shown on phones so the result card stays short
+const VERDICT_SHORT = {
+  en:{
+    pyro:      'A couple went full charcoal and you barely blinked.',
+    menace:    'You poked them dizzy and called it plating.',
+    chaos:     'One runny, one cremated, one buried in pepper — no two alike.',
+    perfect:   'Six identical golden suns, aligned to the millimeter.',
+    purist:    'Not one grain of salt — just the essentials.',
+    maximal:   'You seasoned like the spice rack owed you money.',
+    salty:     'Salt, salt, and a little more salt.',
+    peppery:   'Pepper on everything; the salt never got a turn.',
+    runny:     "Half barely met the heat — and you'll insist that's the point.",
+    softie:    'Every egg left the pan beaming.',
+    toughlove: 'Every egg salted, peppered, and the exact same gold.',
+    gloomy:    'Most came out glum — you were here to finish, not to cheer.',
+    scorch:    "Five came out fine, one went to charcoal — and you're at peace with it.",
+    safe:      'Every egg the same, gently done, nothing risked.',
+    steady:    'A little of everything, nothing out of place.',
+  },
+  zh:{
+    pyro:      '好几颗烧成了焦炭，你却连眼都没眨一下。',
+    menace:    '你把蛋戳到眼冒金星，还管这叫摆盘。',
+    chaos:     '一颗流心、一颗成炭、一颗淹在胡椒里，没有两颗一样。',
+    perfect:   '六颗一模一样的金黄小太阳，毫米级对齐。',
+    purist:    '一粒盐都没放，只留最本真的味道。',
+    maximal:   '你撒调料的架势，像调料架欠了你钱。',
+    salty:     '盐、盐、再来一点盐。',
+    peppery:   '什么都要来点胡椒，盐压根没轮上。',
+    runny:     '一半还没怎么沾热气就出锅，你还坚持这才是精髓。',
+    softie:    '每颗蛋出锅时都笑眯眯的。',
+    toughlove: '每颗都加了盐、撒了胡椒，火候煎成同样的金黄。',
+    gloomy:    '大多数蛋都闷闷不乐，你是来干完活的，不是来哄人的。',
+    scorch:    '五颗好好的，一颗烧成了炭，而你居然挺淡定。',
+    safe:      '每颗都一个样，火候温吞，一点风险都没冒。',
+    steady:    '什么都来一点，没有一处出格。',
+  }
+};
+
 const cv = document.getElementById('stage');
 const ctx = cv.getContext('2d');
 let W=0,H=0,DPR=1;
 function resize(){
-  DPR = Math.min(2, window.devicePixelRatio||1);
+  // render at the screen's native density (up to 3x) so phones stay crisp, not upscaled
+  DPR = Math.min(3, window.devicePixelRatio||1);
   W = window.innerWidth; H = window.innerHeight;
-  cv.width = W*DPR; cv.height = H*DPR;
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
   cv.style.width = W+'px'; cv.style.height = H+'px';
   ctx.setTransform(DPR,0,0,DPR,0,0);
   layoutHolder();
@@ -193,7 +236,7 @@ function layoutHolder(){
   holder.w = Math.min(W*0.62, 300);
   holder.h = holder.w*0.6;                 // classic half-dozen tray (3 cols x 2 rows)
   holder.x = (W - holder.w)/2;
-  holder.y = Math.max(hudBottom + 10, H*0.11);
+  holder.y = Math.max(hudBottom + 16, H*0.125);
 }
 
 // ---- pan geometry — fitted into the space between the carton and the toolbar ----
@@ -204,7 +247,7 @@ function layoutPan(){
   const avail = Math.max(120, tbTop - top);
   pan.r = Math.min(W*0.30, avail*0.42, Math.min(W,H)*0.21);
   pan.x = W*0.5;
-  pan.y = top + avail*0.5;
+  pan.y = top + avail*0.43;   // sit a little above the midpoint between carton and toolbar
 }
 
 // ---- roam box: the rectangle free eggs are allowed to drift around in ----
@@ -700,7 +743,7 @@ function updateFree(e, dt){
   e.faceDir = Math.max(-0.4, Math.min(0.4, e.faceDir + e.vx*0.012));
 }
 
-function eggFreeR(){ return Math.min(W,H)*0.084; }
+function eggFreeR(){ return Math.min(W,H)*0.108; }
 
 // keep a roaming egg inside the play box and out of solid obstacles (pan, carton)
 function resolveCollisions(e, R){
@@ -1240,7 +1283,69 @@ function pickVerdict(snaps){
   return best ? best.id : 'steady';
 }
 
+// pick a layout that matches the screen: a portrait, big-egg card on phones,
+// the wide tumbled-plate card on roomier landscape screens
 function composePhoto(){
+  return window.innerHeight > window.innerWidth * 1.05
+    ? composePhotoPortrait()
+    : composePhotoLandscape();
+}
+
+// portrait card: six big eggs huddled close and a little irregular — cosy, not a tidy grid
+function composePhotoPortrait(){
+  const pw=680, ph=880;
+  const oc=document.createElement('canvas');
+  oc.width=pw; oc.height=ph;
+  const pc=oc.getContext('2d');
+
+  // warm board + hand-drawn cream card
+  pc.fillStyle='#f1e2c8'; pc.fillRect(0,0,pw,ph);
+  pc.fillStyle='#fffaf0'; pc.strokeStyle='#c8a882'; pc.lineWidth=5;
+  roundRect(pc,28,28,pw-56,ph-56,30); pc.fill(); pc.stroke();
+
+  // a soft tall tray the eggs rest on (not a round plate)
+  pc.fillStyle='#f6ecda'; pc.strokeStyle='#dcc6a2'; pc.lineWidth=5;
+  roundRect(pc,62,66,pw-124,ph-132,46); pc.fill(); pc.stroke();
+  pc.strokeStyle='#e7d4b4'; pc.lineWidth=3;
+  roundRect(pc,84,88,pw-168,ph-176,36); pc.stroke();
+
+  // big eggs huddled close (slightly overlapping) and tossed off-grid for a cute, casual pile
+  const R=Math.round(pw*0.172);
+  const cols=[pw*0.37, pw*0.63];          // columns pulled in so eggs nearly touch
+  const rows=[ph*0.30, ph*0.5, ph*0.70];  // rows pulled in for a gentle overlap
+  const jitter=[
+    {dx:-0.10,dy:-0.06,rot:-0.16,s:1.05},
+    {dx: 0.12,dy: 0.05,rot: 0.12,s:0.96},
+    {dx: 0.08,dy:-0.10,rot: 0.07,s:1.02},
+    {dx:-0.13,dy: 0.09,rot:-0.10,s:1.04},
+    {dx: 0.06,dy:-0.05,rot:-0.14,s:0.98},
+    {dx:-0.07,dy: 0.11,rot: 0.15,s:1.00},
+  ];
+  const rnd=(a)=>(Math.random()-0.5)*2*a;   // a touch of randomness so each batch's pile differs
+  friedSnapshots
+    .map((look,i)=>{
+      const j=jitter[i%jitter.length];
+      return { look, i,
+        cx: cols[i%2] + (j.dx + rnd(0.08))*R,
+        cy: rows[Math.floor(i/2)] + (j.dy + rnd(0.08))*R,
+        rot:j.rot + rnd(0.06), s:j.s + rnd(0.03) };
+    })
+    .sort((a,b)=>a.cy-b.cy)   // draw top-to-bottom so lower eggs overlap on top
+    .forEach(s=> drawEggPortrait(pc, s.cx, s.cy, R*s.s, s.look, s.i, s.rot));
+
+  // signature, baked in so it travels with screenshots
+  const fontFam = LANG==='zh'
+    ? '"Hannotate SC","Hanzipen SC","Yuanti SC","Kaiti SC","KaiTi","PingFang SC","Microsoft YaHei",sans-serif'
+    : '"Chalkboard SE","Comic Sans MS",system-ui,sans-serif';
+  pc.textAlign='center'; pc.textBaseline='alphabetic';
+  pc.fillStyle='#b89a76'; pc.font=`bold 22px ${fontFam}`;
+  pc.fillText('by '+S.credit, pw/2, ph-42);
+
+  pc.textAlign='left';
+  return oc.toDataURL('image/png');
+}
+
+function composePhotoLandscape(){
   const pw=860, ph=660;
   const fontFam = LANG==='zh'
     ? '"Hannotate SC","Hanzipen SC","Yuanti SC","Kaiti SC","KaiTi","PingFang SC","Microsoft YaHei",sans-serif'
@@ -1271,15 +1376,21 @@ function composePhoto(){
     {x: 0.30, y: 0.58, rot:-0.13, s:1.12},
     {x: 1.62, y: 0.78, rot: 0.08, s:0.96},
   ];
-  // draw back-to-front so lower eggs overlap on top
+  // draw back-to-front so lower eggs overlap on top, with a touch of per-batch randomness
+  const rnd=(a)=>(Math.random()-0.5)*2*a;
   friedSnapshots
-    .map((look,i)=>({look,i,sp:spots[i%spots.length]}))
-    .sort((a,b)=>a.sp.y-b.sp.y)
-    .forEach(({look,i,sp})=>{
-      const cx=plateX + sp.x*R*0.95;
-      const cy=plateY + sp.y*R*0.95;
-      drawEggPortrait(pc, cx, cy, R*sp.s, look, i, sp.rot);
+    .map((look,i)=>({look,i,sp:spots[i%spots.length], jx:rnd(0.12), jy:rnd(0.12), jr:rnd(0.06), js:rnd(0.04)}))
+    .sort((a,b)=>(a.sp.y+a.jy)-(b.sp.y+b.jy))
+    .forEach(({look,i,sp,jx,jy,jr,js})=>{
+      const cx=plateX + (sp.x+jx)*R*0.95;
+      const cy=plateY + (sp.y+jy)*R*0.95;
+      drawEggPortrait(pc, cx, cy, R*(sp.s+js), look, i, sp.rot+jr);
     });
+
+  // signature, baked in so it travels with screenshots
+  pc.textAlign='center'; pc.textBaseline='alphabetic';
+  pc.fillStyle='#b89a76'; pc.font=`bold 20px ${fontFam}`;
+  pc.fillText('by '+S.credit, pw/2, ph-26);
 
   pc.textAlign='left';
   return oc.toDataURL('image/png');
@@ -1290,10 +1401,13 @@ function showPhotoOverlay(){
   // photo (and verdict) match the faces on screen instead of a stale fry-time smile
   for(const f of flock) syncSnapshot(f);
   photoImg.src=composePhoto();
-  const v = S.verdicts[pickVerdict(friedSnapshots)];
-  const set=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
+  const id = pickVerdict(friedSnapshots);
+  const v = S.verdicts[id];
+  const set=(elid,txt)=>{ const el=document.getElementById(elid); if(el) el.textContent=txt; };
+  // on phones, show the one-line verdict so the card stays short; full read on bigger screens
+  const small = window.matchMedia('(max-width:560px)').matches;
   set('photoTitle', v.t);
-  set('photoSub', v.d);
+  set('photoSub', small ? (VERDICT_SHORT[LANG][id] || v.d) : v.d);
   photoOverlay.classList.remove('hidden');
   hint(S.photoReady);
 }
@@ -1309,12 +1423,14 @@ function applyStrings(){
   document.title = S.docTitle;
   const set=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
   set('titleText', S.title);
+  set('byline', 'by '+S.credit);
   set('photoTitle', S.photoTitle);
   set('photoSub', S.photoSub);
   document.querySelectorAll('.tool[data-tool]').forEach(b=>{
     const lbl=b.querySelector('.lbl'); if(lbl) lbl.textContent=S.tool[b.dataset.tool];
   });
   const rb=document.querySelector('#restartBtn .lbl'); if(rb) rb.textContent=S.photoBtn;
+  set('shareHint', S.shareHint);
   const img=document.getElementById('photoImg'); if(img) img.alt=S.imgAlt;
 }
 applyStrings();
