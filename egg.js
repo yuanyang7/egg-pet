@@ -65,6 +65,7 @@ const STRINGS = {
     photoBtn:'fry another batch',
     shareHint:'📸 Screenshot it and get your friends frying eggs!',
     credit:'MCTYuan',
+    playUrl:'vibeplat.com/6eggs/en.html',
     composeTitle:'the fried six',
     composeSub:'one batch, six little personalities',
     verdicts:{
@@ -149,6 +150,7 @@ const STRINGS = {
     photoBtn:'再煎一盘',
     shareHint:'📸 截图分享，叫朋友们来煎蛋！',
     credit:'米臭汤圆',
+    playUrl:'vibeplat.com/6eggs',
     composeTitle:'六颗煎蛋',
     composeSub:'一盘出炉，六种小性格',
     verdicts:{
@@ -1333,13 +1335,15 @@ function composePhotoPortrait(){
     .sort((a,b)=>a.cy-b.cy)   // draw top-to-bottom so lower eggs overlap on top
     .forEach(s=> drawEggPortrait(pc, s.cx, s.cy, R*s.s, s.look, s.i, s.rot));
 
-  // signature, baked in so it travels with screenshots
+  // signature + play link, baked in so they travel with screenshots
   const fontFam = LANG==='zh'
     ? '"Hannotate SC","Hanzipen SC","Yuanti SC","Kaiti SC","KaiTi","PingFang SC","Microsoft YaHei",sans-serif'
     : '"Chalkboard SE","Comic Sans MS",system-ui,sans-serif';
   pc.textAlign='center'; pc.textBaseline='alphabetic';
-  pc.fillStyle='#b89a76'; pc.font=`bold 22px ${fontFam}`;
-  pc.fillText('by '+S.credit, pw/2, ph-42);
+  pc.fillStyle='#b89a76'; pc.font=`bold 20px ${fontFam}`;
+  pc.fillText('by '+S.credit, pw/2, ph-58);
+  pc.fillStyle='#a07c44'; pc.font=`bold 19px ${fontFam}`;
+  pc.fillText('▶ '+S.playUrl, pw/2, ph-30);
 
   pc.textAlign='left';
   return oc.toDataURL('image/png');
@@ -1387,10 +1391,10 @@ function composePhotoLandscape(){
       drawEggPortrait(pc, cx, cy, R*(sp.s+js), look, i, sp.rot+jr);
     });
 
-  // signature, baked in so it travels with screenshots
+  // signature + play link on one line, baked in so they travel with screenshots
   pc.textAlign='center'; pc.textBaseline='alphabetic';
-  pc.fillStyle='#b89a76'; pc.font=`bold 20px ${fontFam}`;
-  pc.fillText('by '+S.credit, pw/2, ph-26);
+  pc.fillStyle='#a07c44'; pc.font=`bold 18px ${fontFam}`;
+  pc.fillText('by '+S.credit+'   ▶ '+S.playUrl, pw/2, ph-42);
 
   pc.textAlign='left';
   return oc.toDataURL('image/png');

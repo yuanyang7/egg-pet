@@ -17,6 +17,13 @@
   }
   html[lang^="zh"] .hud h1{ letter-spacing:1px; }
   #stage{position:fixed; inset:0; display:block;}
+  /* language toggle — fixed corner, separate from the measured HUD/toolbar chrome */
+  .langlink{
+    position:fixed; top:12px; right:14px; z-index:6;
+    font-size:12px; font-weight:bold; padding:5px 12px;
+    color:var(--ink); text-decoration:none; transform:rotate(1.5deg);
+  }
+  .langlink:hover{ transform:rotate(0deg); }
   .hud{
     position:fixed; top:14px; left:50%; transform:translateX(-50%);
     text-align:center; pointer-events:none; z-index:5;
