@@ -1438,7 +1438,9 @@ applyStrings();
 // ---- boot ----
 resize();
 hint(S.bootHint);
-// re-measure once fonts have loaded so the carton/pan sit correctly
+// re-measure once fonts have loaded so the carton/pan sit correctly.
+// `document.fonts` throws under a sandboxed (no allow-same-origin) iframe — e.g. the
+// Vibe app-store preview — so guard it, and start the render loop no matter what.
 window.addEventListener('load', resize);
-if(document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
+try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(resize); }catch(e){}
 requestAnimationFrame(loop);
