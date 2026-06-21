@@ -1414,7 +1414,10 @@ function applyStrings(){
   set('titleText', S.title);
   set('byline', 'by '+S.credit);
   const cl=document.getElementById('creditLine');
-  if(cl) cl.innerHTML = 'by '+S.credit+' · <span class="url">'+S.playUrl+'</span>';
+  if(cl){
+    const gameName = LANG==='zh' ? '《'+S.docTitle+'》' : S.docTitle+' ';
+    cl.innerHTML = gameName+'by '+S.credit+' · <span class="url">'+S.playUrl+'</span>';
+  }
   set('photoTitle', S.photoTitle);
   set('photoSub', S.photoSub);
   document.querySelectorAll('.tool[data-tool]').forEach(b=>{
