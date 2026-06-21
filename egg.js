@@ -1295,26 +1295,30 @@ function composePhoto(){
 
 // portrait card: six big eggs huddled close and a little irregular — cosy, not a tidy grid
 function composePhotoPortrait(){
-  const pw=680, ph=880;
+  const pw=680, ph=920;
   const oc=document.createElement('canvas');
   oc.width=pw; oc.height=ph;
   const pc=oc.getContext('2d');
+  const fontFam = LANG==='zh'
+    ? '"Hannotate SC","Hanzipen SC","Yuanti SC","Kaiti SC","KaiTi","PingFang SC","Microsoft YaHei",sans-serif'
+    : '"Chalkboard SE","Comic Sans MS",system-ui,sans-serif';
 
   // warm board + hand-drawn cream card
   pc.fillStyle='#f1e2c8'; pc.fillRect(0,0,pw,ph);
   pc.fillStyle='#fffaf0'; pc.strokeStyle='#c8a882'; pc.lineWidth=5;
-  roundRect(pc,28,28,pw-56,ph-56,30); pc.fill(); pc.stroke();
+  roundRect(pc,26,26,pw-52,ph-52,32); pc.fill(); pc.stroke();
 
-  // a soft tall tray the eggs rest on (not a round plate)
+  // a soft tray the eggs rest on — sized to leave a clean footer band below it
+  const trayX=58, trayY=58, trayW=pw-116, trayH=656;
   pc.fillStyle='#f6ecda'; pc.strokeStyle='#dcc6a2'; pc.lineWidth=5;
-  roundRect(pc,62,66,pw-124,ph-132,46); pc.fill(); pc.stroke();
+  roundRect(pc,trayX,trayY,trayW,trayH,44); pc.fill(); pc.stroke();
   pc.strokeStyle='#e7d4b4'; pc.lineWidth=3;
-  roundRect(pc,84,88,pw-168,ph-176,36); pc.stroke();
+  roundRect(pc,trayX+22,trayY+22,trayW-44,trayH-44,34); pc.stroke();
 
   // big eggs huddled close (slightly overlapping) and tossed off-grid for a cute, casual pile
-  const R=Math.round(pw*0.172);
-  const cols=[pw*0.37, pw*0.63];          // columns pulled in so eggs nearly touch
-  const rows=[ph*0.30, ph*0.5, ph*0.70];  // rows pulled in for a gentle overlap
+  const R=Math.round(pw*0.168);
+  const cols=[pw*0.36, pw*0.64];
+  const rows=[trayY+trayH*0.21, trayY+trayH*0.50, trayY+trayH*0.79];
   const jitter=[
     {dx:-0.10,dy:-0.06,rot:-0.16,s:1.05},
     {dx: 0.12,dy: 0.05,rot: 0.12,s:0.96},
@@ -1329,23 +1333,27 @@ function composePhotoPortrait(){
       const j=jitter[i%jitter.length];
       return { look, i,
         cx: cols[i%2] + (j.dx + rnd(0.08))*R,
-        cy: rows[Math.floor(i/2)] + (j.dy + rnd(0.08))*R,
+        cy: rows[Math.floor(i/2)] + (j.dy + rnd(0.07))*R,
         rot:j.rot + rnd(0.06), s:j.s + rnd(0.03) };
     })
     .sort((a,b)=>a.cy-b.cy)   // draw top-to-bottom so lower eggs overlap on top
     .forEach(s=> drawEggPortrait(pc, s.cx, s.cy, R*s.s, s.look, s.i, s.rot));
 
-  // signature + play link, baked in so they travel with screenshots
-  const fontFam = LANG==='zh'
-    ? '"Hannotate SC","Hanzipen SC","Yuanti SC","Kaiti SC","KaiTi","PingFang SC","Microsoft YaHei",sans-serif'
-    : '"Chalkboard SE","Comic Sans MS",system-ui,sans-serif';
-  pc.textAlign='center'; pc.textBaseline='alphabetic';
-  pc.fillStyle='#b89a76'; pc.font=`bold 20px ${fontFam}`;
-  pc.fillText('by '+S.credit, pw/2, ph-58);
-  pc.fillStyle='#a07c44'; pc.font=`bold 19px ${fontFam}`;
-  pc.fillText('▶ '+S.playUrl, pw/2, ph-30);
+  // ---- footer band (below the tray): signature + a little play-link sticker ----
+  pc.textAlign='center';
+  pc.textBaseline='alphabetic';
+  pc.fillStyle='#a98a5e'; pc.font=`bold 21px ${fontFam}`;
+  pc.fillText('by '+S.credit, pw/2, 766);
 
-  pc.textAlign='left';
+  pc.font=`bold 22px ${fontFam}`;
+  const tw=pc.measureText(S.playUrl).width;
+  const padX=24, pillH=44, pillW=tw+padX*2, pillX=(pw-pillW)/2, pillY=794;
+  pc.fillStyle='#fff7e8'; pc.strokeStyle='#d8b06a'; pc.lineWidth=3;
+  roundRect(pc, pillX, pillY, pillW, pillH, 15); pc.fill(); pc.stroke();
+  pc.fillStyle='#9a5f24'; pc.textBaseline='middle';
+  pc.fillText(S.playUrl, pw/2, pillY+pillH/2+1);
+
+  pc.textAlign='left'; pc.textBaseline='alphabetic';
   return oc.toDataURL('image/png');
 }
 
@@ -1364,7 +1372,7 @@ function composePhotoLandscape(){
   roundRect(pc,30,30,pw-60,ph-60,26); pc.fill(); pc.stroke();
 
   // a big round plate the eggs are tumbled onto, centred in the card
-  const plateX=pw/2, plateY=ph*0.5, plateR=Math.min(pw,ph)*0.43;
+  const plateX=pw/2, plateY=ph*0.45, plateR=Math.min(pw,ph)*0.40;
   pc.fillStyle='#f6ecda'; pc.strokeStyle='#dcc6a2'; pc.lineWidth=5;
   pc.beginPath(); pc.ellipse(plateX, plateY, plateR*1.05, plateR*0.92, 0, 0, Math.PI*2); pc.fill(); pc.stroke();
   pc.strokeStyle='#e7d4b4'; pc.lineWidth=3;
@@ -1391,12 +1399,22 @@ function composePhotoLandscape(){
       drawEggPortrait(pc, cx, cy, R*(sp.s+js), look, i, sp.rot+jr);
     });
 
-  // signature + play link on one line, baked in so they travel with screenshots
-  pc.textAlign='center'; pc.textBaseline='alphabetic';
-  pc.fillStyle='#a07c44'; pc.font=`bold 18px ${fontFam}`;
-  pc.fillText('by '+S.credit+'   ▶ '+S.playUrl, pw/2, ph-42);
+  // footer: signature + a little play-link sticker (no arrow)
+  pc.textAlign='center'; pc.textBaseline='middle';
+  pc.font=`bold 19px ${fontFam}`;
+  const sig='by '+S.credit, gap=26;
+  const sigW=pc.measureText(sig).width, urlW=pc.measureText(S.playUrl).width;
+  const padX=18, pillW=urlW+padX*2;
+  const total=sigW+gap+pillW, startX=(pw-total)/2, fy=ph-50;
+  pc.fillStyle='#a98a5e'; pc.textAlign='left';
+  pc.fillText(sig, startX, fy);
+  const pillX=startX+sigW+gap, pillY=fy-17, pillH=34;
+  pc.fillStyle='#fff7e8'; pc.strokeStyle='#d8b06a'; pc.lineWidth=2.5;
+  roundRect(pc, pillX, pillY, pillW, pillH, 12); pc.fill(); pc.stroke();
+  pc.fillStyle='#9a5f24'; pc.textAlign='center';
+  pc.fillText(S.playUrl, pillX+pillW/2, fy);
 
-  pc.textAlign='left';
+  pc.textAlign='left'; pc.textBaseline='alphabetic';
   return oc.toDataURL('image/png');
 }
 
