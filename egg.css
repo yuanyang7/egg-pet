@@ -24,7 +24,6 @@
   .hud h1{
     margin:0; font-size:23px; font-weight:bold; letter-spacing:.2px; display:block;
   }
-  .hud .tagline{margin:5px 0 0; font-size:13px; opacity:.7;}
 
   /* flat hand-drawn "sticker" pill — cream fill, ink outline, hard offset shadow */
   .pill{
@@ -66,7 +65,6 @@
     .tool{padding:7px 11px; font-size:13px; gap:5px;}
     .tool svg{width:19px; height:19px;}
     .hud h1{font-size:19px;}
-    .hud .tagline{display:none;}
   }
 
   .overlay{

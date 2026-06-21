@@ -4,7 +4,6 @@ const STRINGS = {
   en:{
     docTitle:'Fry Six Eggs',
     title:'fry six eggs',
-    tagline:'fry them one by one — they get a little naughty',
     imgAlt:'Six fried eggs scattered on a plate',
     tool:{pet:'pet', fry:'heat', salt:'salt', pepper:'pepper', poke:'boop'},
     toolHint:{
@@ -67,24 +66,26 @@ const STRINGS = {
     composeTitle:'the fried six',
     composeSub:'one batch, six little personalities',
     verdicts:{
-      pyro:      {t:'The Grill Master',           d:"Three or more came out charcoal-black, and to you that's not failure — that's smoke ring. Your spirit animal is an open flame; low-and-slow is for cowards. Born for the grill, feared by the smoke alarm."},
-      menace:    {t:'The Dark-Cuisine Master',    d:"You booped them dizzy and called it plating. While everyone else fried breakfast, you ran a performance-art piece. Your kitchen has no recipes, only victims. Long live the dark cuisine."},
-      chaos:     {t:'The Fusion Maverick',        d:"One runny, one cremated, one drowned in pepper — no two from the same country. You don't pick a cuisine, you blend all of them and dare it to work. Borderless, fearless, gloriously undefinable."},
-      perfect:   {t:'The Sushi Master',           d:"Six identical golden suns, aligned to the millimeter. You'd re-fry the whole batch if one yolk sat crooked. Precision is devotion; the cutting board is an altar. Jiro would nod."},
-      purist:    {t:'The Cantonese Purist',       d:"Not one grain of salt, not a fleck of pepper — you let the egg be the egg. To you, real skill is showing the ingredient, not hiding it. The truest flavor needs no disguise."},
-      maximal:   {t:'The Sichuan Firebrand',      d:"You seasoned like the spice rack owed you money. Bold, layered, unapologetically loud — heavy oil, heavy heat, heavy heart. Subtle? Never met her. One bite and the whole table is sweating happily."},
-      salty:     {t:'The Shandong Traditionalist',d:"Salt, salt, and a little more salt — pepper was strictly decorative. You cook by the old rules: savory is king, and one pinch settles everything. Foundational, dependable, completely set in your ways."},
-      peppery:   {t:'The Hunan Heat-Bringer',     d:"Pepper on everything; the salt never got a turn. You like it sharp, fierce, and a little reckless — the hotter the better, the bolder the truer. No chili, no joy."},
-      runny:     {t:'The Al Dente Believer',      d:"Half of them barely met the heat, and you'll insist that's the point. Underdone? No — al dente. You pull at the perfect almost-moment, because total commitment is so… well-done. Elegant, a little contrarian, allergic to overcooking anything (including decisions)."},
-      softie:    {t:'The Comfort-Food Cook',      d:"Every egg left the pan beaming, because you simply would not let one suffer. You don't cook food, you cook care — the taste of somebody's mom's kitchen. Warm, generous, and absolutely never going to run a restaurant."},
-      toughlove: {t:'The Michelin Perfectionist', d:"Your eggs came out flawless and faintly traumatized. You run the pan like a French brigade — exacting, intense, zero tolerance for a sloppy yolk. The diners are nervous; the food is perfect. \"Yes, Chef.\""},
-      steady:    {t:'The Banquet Master',         d:"A little of everything, nothing out of place — golden enough, seasoned enough, happy enough. You're the cuisine they serve at state banquets: balanced, refined, impossible to dislike. The one everyone can agree on."},
+      pyro:      {t:'The Grill Master',           d:"A couple went full charcoal and you barely blinked. Hand you a task and you charge straight in at full throttle — no warm-up, no babysitting, no patience for the fiddly bits. You'd rather finish fast and singe a few edges than tiptoe around. The big stuff gets done; the delicate stuff goes to someone calmer. Born for the flame, feared by the smoke alarm."},
+      menace:    {t:'The Dark-Cuisine Master',    d:"You poked them dizzy and called it plating. You solve problems by poking at them the way you're not supposed to — ignore the manual, press the button marked don't, try the thing everyone warned against. Half the time it breaks; the other half you find a door nobody knew was there. Long live the dark cuisine."},
+      chaos:     {t:'The Fusion Maverick',        d:"One runny, one cremated, one buried in pepper — no two alike. You never tackle a job the documented way; you improvise, mix three approaches at once, and find out as you go. Sometimes it's brilliant, sometimes it's a pile-up, but the path is always yours. Predictable was never on the menu."},
+      perfect:   {t:'The Sushi Master',           d:"Six identical golden suns, aligned to the millimeter. You finish a task the same way every time — methodically, exactingly, refusing to call it done while one detail sits crooked. Slow to ship, impossible to fault. Nobody who inherits your work has ever had to redo it. Jiro would nod."},
+      purist:    {t:'The Cantonese Purist',       d:"Not one grain of salt. Faced with a problem you strip it to the core and solve exactly that — no extra layers, no gold-plating, nothing added just to look busy. Where others over-engineer, you trust the simplest thing that works. Quietly certain the essentials are enough."},
+      maximal:   {t:'The Sichuan Firebrand',      d:"You seasoned like the spice rack owed you money. When a task lands you throw everything at it — every resource, every angle, volume at eleven. Under-doing it never crosses your mind; you'd rather overshoot and dazzle than play it small. One bite and the whole table is sweating happily."},
+      salty:     {t:'The Shandong Traditionalist',d:"Salt, salt, and a little more salt. You finish jobs the proven way — reach for the method that worked last time and trust it again. Why reinvent what already holds up? Dependable, unhurried, completely immovable once you've picked your approach. The one who keeps the line steady."},
+      peppery:   {t:'The Pepper-Sneeze Chef',     d:"Pepper on everything; the salt never got a turn. You go at problems sharp and head-on — pick the bold, risky route and commit all the way, no hedging. Too cautious is worse to you than too much. Rather overshoot loud than play it quiet. No bite, no joy."},
+      runny:     {t:'The Al Dente Believer',      d:"Half barely met the heat, and you'll insist that's the point. You call a task done at the perfect almost-moment — eighty percent and out, before polish curdles into fussing. Over-finishing feels like a trap, so you leave things (and decisions) elegantly open. Allergic to the last twenty percent."},
+      softie:    {t:'The Comfort-Food Cook',      d:"Every egg left the pan beaming. You solve problems through people first — keep everyone comfortable, smooth the friction, make sure no one gets bruised on the way to done. The mood matters to you as much as the result, sometimes more. Warm, generous, a little too willing to absorb the hard parts yourself."},
+      toughlove: {t:'The Michelin Perfectionist', d:"Your eggs came out flawless and faintly traumatized. You finish a task by holding everyone — yourself first — to a merciless bar. The output is immaculate; the process is tense. You believe the high standard is the kindness, even when nobody feels coddled getting there. \"Yes, Chef.\""},
+      gloomy:    {t:'The Cafeteria Lifer',        d:"Most of them came out glum, and you were here to finish, not to cheer anyone up. You get the task done — efficiently, on time, no fuss — and the feelings around it simply aren't your department. Cold, maybe; reliable, definitely. The deliverable lands; the warmth was never the assignment."},
+      scorch:    {t:'The Socarrat Specialist',    d:"Five came out fine and one went to charcoal — and you're weirdly at peace with it. You nail almost everything with one stubborn blind spot: the same corner cut, the same box left unchecked, every single time. Ninety percent airtight, ten percent gloriously charred — and honestly, that burnt one is your secret favorite. Every pan needs its socarrat."},
+      safe:      {t:'The Plain-Rice Loyalist',    d:"Every egg the same, gently done, nothing risked. You finish tasks by taking the safe road — the low-risk option, the path that won't blow up, the choice you can defend later. Rarely spectacular, never a disaster. People underrate you right up until they need someone who simply won't drop the ball. The dependable default."},
+      steady:    {t:'The Banquet Master',         d:"A little of everything, nothing out of place. You finish a task by reading exactly what it needs and meeting it there — weighing the trade-offs, landing in the sensible middle, no drama, no extremes. Not the flashiest solution, but the one everyone can live with. Balanced, level-headed, impossible to dislike."},
     },
   },
   zh:{
     docTitle:'煎六颗蛋',
     title:'煎六颗蛋',
-    tagline:'一颗一颗煎，它们有点调皮',
     imgAlt:'盘子里随意摆着的六颗煎蛋',
     tool:{pet:'抚摸', fry:'加热', salt:'撒盐', pepper:'胡椒', poke:'戳一戳'},
     toolHint:{
@@ -147,18 +148,21 @@ const STRINGS = {
     composeTitle:'六颗煎蛋',
     composeSub:'一盘出炉，六种小性格',
     verdicts:{
-      pyro:      {t:'炭火大师',           d:'起码三颗煎成了焦炭，而你管这叫"烟熏味"。你的本命是明火，文火慢炖是懦夫的玩意儿。为烤架而生，被烟雾报警器闻风丧胆。'},
-      menace:    {t:'黑暗料理大师',       d:'你把蛋戳到眼冒金星，还说这叫摆盘。别人在煎早餐，你在搞行为艺术。你的厨房没有菜谱，只有受害者。黑暗料理万岁。'},
-      chaos:     {t:'无国界融合大厨',     d:'一颗流心、一颗成炭、一颗淹在胡椒里——没有两颗来自同一个国家。你从不挑菜系，你把它们全混到一起，赌它能成。无国界、无所畏惧、精彩到无法定义。'},
-      perfect:   {t:'寿司之神',           d:'六颗一模一样的金黄小太阳，毫米级对齐。但凡有一颗蛋黄歪了，你能把整盘重煎一遍。精准即虔诚，案板就是祭坛。小野二郎看了都点头。'},
-      purist:    {t:'粤菜师傅',           d:'一粒盐没放，一点胡椒也欠奉——你让蛋就是蛋。在你看来，真本事是把食材亮出来，而不是盖住它。原汁原味：最真的味道不需要伪装。'},
-      maximal:   {t:'川菜掌勺',           d:'你撒调料的架势，像调料架欠了你钱。浓墨重彩、层层叠叠、理直气壮地张扬——重油、重辣、重感情。清淡？不认识。一口下去整桌人开开心心地冒汗。'},
-      salty:     {t:'鲁菜大师傅',         d:'盐、盐、再来一点盐——胡椒纯属摆设。你按老规矩做菜：咸鲜为王，一撮盐定乾坤。根基扎实、靠得住，也完全油盐不进地坚持自我。'},
-      peppery:   {t:'湘菜辣手',           d:'什么都要来点胡椒，盐压根没轮上。你就好那口冲、那口烈、那点不管不顾——越辣越带劲，越冲越够真。无辣，不欢。'},
-      runny:     {t:'意式 al dente 信徒', d:'一半还没怎么碰到热气就出锅了，你还坚持这是精髓。夹生？不，这叫 al dente。你总在"差一点点全熟"的完美瞬间收手，因为全情投入实在太……熟了。优雅、有点唱反调、对"煎过头"（包括做决定）过敏。'},
-      softie:    {t:'妈妈的味道',         d:'每颗蛋出锅时都笑眯眯的，因为你舍不得让任何一颗受委屈。你做的不是菜，是心意——是别人妈妈厨房里的那种味道。温暖、大方，而且这辈子绝对开不了饭馆。'},
-      toughlove: {t:'米其林主厨',         d:'你的蛋煎得无可挑剔，又透着一丝惊魂未定。你像管法餐后厨一样掌勺——严苛、紧绷、对一颗马虎的蛋黄零容忍。食客提心吊胆，出品堪称完美。"是，主厨。"'},
-      steady:    {t:'淮扬菜大师',         d:'什么都来一点，没有一处出格——够金黄、够味、也够开心。你就是国宴上端出来的那道菜：平衡、考究、让人挑不出毛病。所有人都能达成一致的那一个。'},
+      pyro:      {t:'炭火大师',           d:'好几颗烧成了焦炭，你却连眼都没眨一下。任务一到手，你就全速冲上去——不预热、不伺候、没耐心理会那些琐碎细节。宁可快点收工、烤焦几处边角，也不愿小心翼翼地磨蹭。大事你能搞定，精细活儿就交给更沉得住气的人。为明火而生，被烟雾报警器闻风丧胆。'},
+      menace:    {t:'黑暗料理大师',       d:'你把蛋戳到眼冒金星，还管这叫摆盘。你解决问题的方式，就是专挑不该碰的地方下手——不看说明书，专按那个写着"别"的按钮，试所有人都劝你别试的招。一半时候搞砸，另一半却撞开了别人没发现的门。黑暗料理万岁。'},
+      chaos:     {t:'无国界融合大厨',     d:'一颗流心、一颗成炭、一颗淹在胡椒里——没有两颗一样。你从不照着既定流程做事，而是即兴发挥、把三种思路混到一起、边走边试。有时是神来之笔，有时是连环车祸，但路子永远是你自己的。"按部就班"从来不在你的菜单上。'},
+      perfect:   {t:'寿司之神',           d:'六颗一模一样的金黄小太阳，毫米级对齐。你每次收尾都是同一套——有条不紊、一丝不苟，只要还有一处歪着，就绝不松手说"完成"。出活儿慢，却挑不出毛病。接手过你成果的人，从没返工过一次。小野二郎看了都点头。'},
+      purist:    {t:'粤菜师傅',           d:'一粒盐都没放。面对问题，你只把它剥到核心、只解决那一点——不加多余的层、不镀金、不为显得忙而添东西。别人过度设计的时候，你信得过"能用的最简方案"。安安静静地笃定：抓住本质就够了。'},
+      maximal:   {t:'川菜掌勺',           d:'你撒调料的架势，像调料架欠了你钱。任务一来，你就把所有家当都砸上去——所有资源、所有角度、音量拉满。"少做一点"从没在你脑子里出现过；宁可用力过猛地惊艳，也不肯小打小闹。一口下去整桌人开开心心地冒汗。'},
+      salty:     {t:'鲁菜大师傅',         d:'盐、盐、再来一点盐。你收尾靠的是验证过的老办法——伸手就拿上次管用的那一套，再信它一回。已经立得住的东西，何必重造？靠谱、不慌不忙，一旦定了路子就九头牛都拉不回。守得住阵脚的那一个。'},
+      peppery:   {t:'胡椒喷嚏大厨',       d:'什么都要来点胡椒，盐压根没轮上。你处理问题又冲又直——挑那条大胆、有风险的路，一头扎到底，绝不留后手。在你看来，太谨慎比太过火更糟。宁可大声地用力过头，也不肯闷声小做。无椒，不欢。'},
+      runny:     {t:'意式 al dente 信徒', d:'一半还没怎么沾热气就出锅了，你还坚持这才是精髓。你总在"差一点点全熟"的完美瞬间宣布完工——八成就够，免得打磨变成纠结。把事情做到头反而让你警觉，于是你把事情（和决定）都优雅地留着口子。对最后那两成过敏。'},
+      softie:    {t:'妈妈的味道',         d:'每颗蛋出锅时都笑眯眯的。你解决问题，永远先顾人——让大家都舒服、把摩擦抹平、确保没人在通往完成的路上被磕到。气氛对你和结果一样重要，有时甚至更重要。温暖、大方，又有点太爱把难处自己扛下来。'},
+      toughlove: {t:'米其林主厨',         d:'你的蛋煎得无可挑剔，又透着一丝惊魂未定。你收尾的方式，是对所有人——首先是自己——都狠到不留情面。出品完美，过程紧绷。你坚信高标准本身就是一种善意，哪怕一路上没人觉得被善待。"是，主厨。"'},
+      gloomy:    {t:'食堂大锅饭',         d:'大多数蛋出锅时都闷闷不乐——你是来把活儿干完的，不是来哄谁开心的。任务你照样利落、准时、不啰嗦地交付，至于周围的情绪，根本不归你管。说冷漠也行，说靠谱更准。东西按时落地，温度从来不在任务书里。'},
+      scorch:    {t:'锅巴爱好者',         d:'五颗好好的，一颗烧成了炭——而你居然挺淡定。你几乎什么都能做对，只剩一个顽固的盲区：每次都漏掉同一个角、同一个没打的勾。九成滴水不漏，一成焦香四溢——说实话，那块焦的才是你偷偷的心头好。每一锅，都得留一块锅巴。'},
+      safe:      {t:'白米饭忠实派',       d:'每颗都一个样，火候温吞，一点风险都没冒。你收尾的方式就是走稳路——挑风险最低、最不会出事、事后最好交代的那个选项。难得惊艳，却也从不翻车。大家一直低估你，直到需要一个绝不掉链子的人。最让人放心的默认项。'},
+      steady:    {t:'淮扬菜大师',         d:'什么都来一点，没有一处出格。你收尾的方式，是先把任务真正需要什么读懂，再稳稳地落在那儿——权衡利弊、落在合理的中间，不闹脾气、不走极端。也许不是最亮眼的方案，却是所有人都能接受的那个。平衡、稳重、让人挑不出毛病。'},
     },
   }
 };
@@ -538,6 +542,7 @@ function update(dt){
   refreshRoamBox();
   if(egg) updateActiveEgg(dt);
   for(const f of flock) updateRoamingEgg(f, dt);
+  separateFlock();
 
   // particles
   for(const p of parts){
@@ -707,6 +712,30 @@ function resolveCollisions(e, R){
   // the pan is an obstacle — except for an egg deliberately climbing back in
   if(e.goal!=='toPan') pushOutCircle(e, rr, pan.x, pan.y, pan.r*0.85);
   pushOutRect(e, rr, holder.x, holder.y, holder.w, holder.h);
+}
+// keep roaming eggs from overlapping each other — they may touch, but not stack
+function separateFlock(){
+  const free=flock.filter(f=>f.state==='free');
+  for(let i=0;i<free.length;i++){
+    for(let j=i+1;j<free.length;j++){
+      const a=free[i], b=free[j];
+      const min=eggRadius(a)*0.9 + eggRadius(b)*0.9;
+      let dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy);
+      if(d>=min) continue;
+      if(d<0.001){ dx=Math.random()-0.5; dy=Math.random()-0.5; d=Math.hypot(dx,dy)||1; }
+      const nx=dx/d, ny=dy/d, push=(min-d)/2;
+      a.x-=nx*push; a.y-=ny*push;
+      b.x+=nx*push; b.y+=ny*push;
+      // trade the approaching part of their velocity, so it reads as a soft bump
+      const van=(b.vx-a.vx)*nx + (b.vy-a.vy)*ny;
+      if(van<0){
+        a.vx+=van*nx*0.5; a.vy+=van*ny*0.5;
+        b.vx-=van*nx*0.5; b.vy-=van*ny*0.5;
+      }
+    }
+  }
+  // a shove may nudge one into a wall/pan — re-resolve those
+  for(const f of free) resolveCollisions(f, eggRadius(f));
 }
 function pushOutCircle(e, rr, cx, cy, rad){
   const dx=e.x-cx, dy=e.y-cy, d=Math.hypot(dx,dy), min=rad+rr;
@@ -1173,7 +1202,8 @@ function pickVerdict(snaps){
   const seasons = snaps.map(s=>s.salt.length + s.pepper.length);
   const sum = a => a.reduce((x,y)=>x+y,0);
   const cookSpread  = Math.max(...cooks) - Math.min(...cooks);
-  const nBurnt      = cooks.filter(c=>c>1.5).length;
+  const nCharred    = cooks.filter(c=>c>1.5).length;    // properly black
+  const nOvercooked = cooks.filter(c=>c>1.05).length;   // pushed past done at all
   const nRunny      = cooks.filter(c=>c<0.6).length;
   const nGolden     = cooks.filter(c=>c>=0.85 && c<=1.2).length;
   const totalSalt   = sum(snaps.map(s=>s.salt.length));
@@ -1183,8 +1213,7 @@ function pickVerdict(snaps){
   const seasonSpread= Math.max(...seasons) - Math.min(...seasons);
   const avgHappy    = sum(snaps.map(s=>s.happy))/n;
   const nSad        = snaps.filter(s=>s.happy<0.35).length;
-  const nDizzy      = snaps.filter(s=>s.dizzy).length;
-  const totalBoops  = sum(snaps.map(s=>s.boops||0));
+  const nDizzy      = snaps.filter(s=>s.dizzy).length;   // only eggs that ended up dizzy (spiral-eyed in the photo)
 
   // each candidate: does it match its condition, and by how much (ratio over threshold —
   // higher means the result overshoots its bar by more). When several match, the one
@@ -1192,8 +1221,8 @@ function pickVerdict(snaps){
   // are clamped so no single uncapped metric (e.g. avgSeason) can dominate.
   const cap = x => Math.min(3.0, x);
   const candidates = [
-    {id:'pyro',      match: nBurnt>=3,                                    score: cap(nBurnt/3)},
-    {id:'menace',    match: nDizzy>=2 || totalBoops>=12,                  score: cap(Math.max(nDizzy/2, totalBoops/12))},
+    {id:'pyro',      match: nCharred>=2,                                  score: cap(nCharred/2)},
+    {id:'menace',    match: nDizzy>=2,                                    score: cap(nDizzy/2)},
     {id:'chaos',     match: cookSpread>=1.4 && seasonSpread>=44,          score: cap(Math.min(cookSpread/1.4, seasonSpread/44))},
     {id:'perfect',   match: nGolden>=4 && cookSpread<=0.5,                score: cap(Math.min(nGolden/4, cookSpread>0 ? 0.5/cookSpread : 2))},
     {id:'purist',    match: totalSeason<=4,                               score: 1.5},
@@ -1201,8 +1230,12 @@ function pickVerdict(snaps){
     {id:'salty',     match: totalSalt>=totalPepper*3 && totalSalt>=24,    score: cap(Math.min(totalSalt/Math.max(totalPepper*3,1), totalSalt/24))},
     {id:'peppery',   match: totalPepper>=totalSalt*3 && totalPepper>=24,  score: cap(Math.min(totalPepper/Math.max(totalSalt*3,1), totalPepper/24))},
     {id:'runny',     match: nRunny>=3,                                    score: cap(nRunny/3)},
-    {id:'softie',    match: avgHappy>=0.65 && nBurnt===0,                 score: cap(avgHappy/0.65)},
+    {id:'softie',    match: avgHappy>=0.65 && nCharred===0,               score: cap(avgHappy/0.65)},
     {id:'toughlove', match: nSad>=2 && nGolden>=2,                        score: cap(Math.min(nSad/2, nGolden/2))},
+    // emotion- & accident-driven types
+    {id:'gloomy',    match: nSad>=3 || avgHappy<=0.32,                    score: cap(Math.max(nSad/3, avgHappy<=0.32?1.6:0))},
+    {id:'scorch',    match: nOvercooked>=1 && nCharred<2,                 score: 1.5},
+    {id:'safe',      match: cookSpread<=0.5 && nRunny===0 && nCharred===0 && nDizzy===0 && totalSeason>4 && totalSeason<=14 && avgHappy<0.65, score: 1.4},
   ];
 
   let best = null;
@@ -1259,6 +1292,9 @@ function composePhoto(){
 }
 
 function showPhotoOverlay(){
+  // freshen every fried egg's finale look to its real current mood, so the
+  // photo (and verdict) match the faces on screen instead of a stale fry-time smile
+  for(const f of flock) syncSnapshot(f);
   photoImg.src=composePhoto();
   const v = S.verdicts[pickVerdict(friedSnapshots)];
   const set=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
@@ -1279,7 +1315,6 @@ function applyStrings(){
   document.title = S.docTitle;
   const set=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
   set('titleText', S.title);
-  set('tagline', S.tagline);
   set('photoTitle', S.photoTitle);
   set('photoSub', S.photoSub);
   document.querySelectorAll('.tool[data-tool]').forEach(b=>{
