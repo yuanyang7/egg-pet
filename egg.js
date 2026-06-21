@@ -76,7 +76,7 @@ const STRINGS = {
       peppery:   {t:'The Pepper-Sneeze Chef',     d:"Pepper on everything; the salt never got a turn. You go at problems sharp and head-on — pick the bold, risky route and commit all the way, no hedging. Too cautious is worse to you than too much. Rather overshoot loud than play it quiet. No bite, no joy."},
       runny:     {t:'The Al Dente Believer',      d:"Half barely met the heat, and you'll insist that's the point. You call a task done at the perfect almost-moment — eighty percent and out, before polish curdles into fussing. Over-finishing feels like a trap, so you leave things (and decisions) elegantly open. Allergic to the last twenty percent."},
       softie:    {t:'The Comfort-Food Cook',      d:"Every egg left the pan beaming. You solve problems through people first — keep everyone comfortable, smooth the friction, make sure no one gets bruised on the way to done. The mood matters to you as much as the result, sometimes more. Warm, generous, a little too willing to absorb the hard parts yourself."},
-      toughlove: {t:'The Michelin Perfectionist', d:"Your eggs came out flawless and faintly traumatized. You finish a task by holding everyone — yourself first — to a merciless bar. The output is immaculate; the process is tense. You believe the high standard is the kindness, even when nobody feels coddled getting there. \"Yes, Chef.\""},
+      toughlove: {t:'The Michelin Perfectionist', d:"Every egg salted, peppered, and cooked to the exact same gold — nothing left to chance. You don't call a task done until every box is ticked twice and every detail is to spec. The bar is merciless, but you clear it yourself first, and the results speak: flawless, complete, and somehow still smiling. \"Yes, Chef.\""},
       gloomy:    {t:'The Cafeteria Lifer',        d:"Most of them came out glum, and you were here to finish, not to cheer anyone up. You get the task done — efficiently, on time, no fuss — and the feelings around it simply aren't your department. Cold, maybe; reliable, definitely. The deliverable lands; the warmth was never the assignment."},
       scorch:    {t:'The Socarrat Specialist',    d:"Five came out fine and one went to charcoal — and you're weirdly at peace with it. You nail almost everything with one stubborn blind spot: the same corner cut, the same box left unchecked, every single time. Ninety percent airtight, ten percent gloriously charred — and honestly, that burnt one is your secret favorite. Every pan needs its socarrat."},
       safe:      {t:'The Plain-Rice Loyalist',    d:"Every egg the same, gently done, nothing risked. You finish tasks by taking the safe road — the low-risk option, the path that won't blow up, the choice you can defend later. Rarely spectacular, never a disaster. People underrate you right up until they need someone who simply won't drop the ball. The dependable default."},
@@ -158,7 +158,7 @@ const STRINGS = {
       peppery:   {t:'胡椒喷嚏大厨',       d:'什么都要来点胡椒，盐压根没轮上。你处理问题又冲又直——挑那条大胆、有风险的路，一头扎到底，绝不留后手。在你看来，太谨慎比太过火更糟。宁可大声地用力过头，也不肯闷声小做。无椒，不欢。'},
       runny:     {t:'意式 al dente 信徒', d:'一半还没怎么沾热气就出锅了，你还坚持这才是精髓。你总在"差一点点全熟"的完美瞬间宣布完工——八成就够，免得打磨变成纠结。把事情做到头反而让你警觉，于是你把事情（和决定）都优雅地留着口子。对最后那两成过敏。'},
       softie:    {t:'妈妈的味道',         d:'每颗蛋出锅时都笑眯眯的。你解决问题，永远先顾人——让大家都舒服、把摩擦抹平、确保没人在通往完成的路上被磕到。气氛对你和结果一样重要，有时甚至更重要。温暖、大方，又有点太爱把难处自己扛下来。'},
-      toughlove: {t:'米其林主厨',         d:'你的蛋煎得无可挑剔，又透着一丝惊魂未定。你收尾的方式，是对所有人——首先是自己——都狠到不留情面。出品完美，过程紧绷。你坚信高标准本身就是一种善意，哪怕一路上没人觉得被善待。"是，主厨。"'},
+      toughlove: {t:'米其林主厨',         d:'每颗蛋都加了盐、撒了胡椒，火候煎成一模一样的金黄——没有一处碰运气。任务不到每个细节都对上规格、每个勾都打两遍，你绝不说"完成"。标准狠到不留情面，但你先狠的是自己；结果会说话：无可挑剔、面面俱到，居然还都笑着。"是，主厨。"'},
       gloomy:    {t:'食堂大锅饭',         d:'大多数蛋出锅时都闷闷不乐——你是来把活儿干完的，不是来哄谁开心的。任务你照样利落、准时、不啰嗦地交付，至于周围的情绪，根本不归你管。说冷漠也行，说靠谱更准。东西按时落地，温度从来不在任务书里。'},
       scorch:    {t:'锅巴爱好者',         d:'五颗好好的，一颗烧成了炭——而你居然挺淡定。你几乎什么都能做对，只剩一个顽固的盲区：每次都漏掉同一个角、同一个没打的勾。九成滴水不漏，一成焦香四溢——说实话，那块焦的才是你偷偷的心头好。每一锅，都得留一块锅巴。'},
       safe:      {t:'白米饭忠实派',       d:'每颗都一个样，火候温吞，一点风险都没冒。你收尾的方式就是走稳路——挑风险最低、最不会出事、事后最好交代的那个选项。难得惊艳，却也从不翻车。大家一直低估你，直到需要一个绝不掉链子的人。最让人放心的默认项。'},
@@ -1213,6 +1213,9 @@ function pickVerdict(snaps){
   const seasonSpread= Math.max(...seasons) - Math.min(...seasons);
   const avgHappy    = sum(snaps.map(s=>s.happy))/n;
   const nSad        = snaps.filter(s=>s.happy<0.35).length;
+  const nHappy      = snaps.filter(s=>s.happy>0.6).length;
+  const allSeasoned = snaps.every(s=>s.salt.length>0 && s.pepper.length>0);
+  const allGolden   = nGolden===n;
   const nDizzy      = snaps.filter(s=>s.dizzy).length;   // only eggs that ended up dizzy (spiral-eyed in the photo)
 
   // each candidate: does it match its condition, and by how much (ratio over threshold —
@@ -1231,7 +1234,7 @@ function pickVerdict(snaps){
     {id:'peppery',   match: totalPepper>=totalSalt*3 && totalPepper>=24,  score: cap(Math.min(totalPepper/Math.max(totalSalt*3,1), totalPepper/24))},
     {id:'runny',     match: nRunny>=3,                                    score: cap(nRunny/3)},
     {id:'softie',    match: avgHappy>=0.65 && nCharred===0,               score: cap(avgHappy/0.65)},
-    {id:'toughlove', match: nSad>=2 && nGolden>=2,                        score: cap(Math.min(nSad/2, nGolden/2))},
+    {id:'toughlove', match: allSeasoned && allGolden && nHappy>=2,        score: 2.6},
     // emotion- & accident-driven types
     {id:'gloomy',    match: nSad>=3 || avgHappy<=0.32,                    score: cap(Math.max(nSad/3, avgHappy<=0.32?1.6:0))},
     {id:'scorch',    match: nOvercooked>=1 && nCharred<2,                 score: 1.5},
