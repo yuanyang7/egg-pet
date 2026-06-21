@@ -700,7 +700,7 @@ function updateFree(e, dt){
   e.faceDir = Math.max(-0.4, Math.min(0.4, e.faceDir + e.vx*0.012));
 }
 
-function eggFreeR(){ return Math.min(W,H)*0.072; }
+function eggFreeR(){ return Math.min(W,H)*0.084; }
 
 // keep a roaming egg inside the play box and out of solid obstacles (pan, carton)
 function resolveCollisions(e, R){
@@ -1122,15 +1122,6 @@ function drawEggPortrait(c, cx, cy, R, look, seedIndex, rot){
   c.beginPath();
   tracePoints(c, blobPoints(R*0.92, seedIndex*1.7+0.6));
   c.fill(); c.stroke();
-
-  if(browning>0.5){
-    c.fillStyle = browning>1 ? 'rgba(60,40,25,0.8)' : `rgba(190,140,80,${(browning-0.5)*1.2})`;
-    const dots = browning>1 ? 14 : 8;
-    for(let i=0;i<dots;i++){
-      const a=i/dots*Math.PI*2+0.3;
-      c.beginPath(); c.arc(Math.cos(a)*R*0.9,Math.sin(a)*R*0.81,R*0.03,0,Math.PI*2); c.fill();
-    }
-  }
 
   const yolkR=R*0.48;
   c.fillStyle=col.yolk; c.strokeStyle=col.yStroke; c.lineWidth=lw;
